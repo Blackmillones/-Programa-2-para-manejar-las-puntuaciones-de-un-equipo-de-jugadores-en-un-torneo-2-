@@ -1,0 +1,67 @@
+# Programa 2 para manejar las puntuaciones de un equipo de jugadores en un torneo (2)
+
+class Torneo:
+    def __init__(self):
+        self.scores = {}
+
+    def agregar_puntuación(self, player, score):
+        if player not in self.scores:
+            self.scores[player] = []
+        self.scores[player].append(score)
+
+    def obtener_puntuación_promedio(self, Jugador):
+        if Jugador in self.scores:
+            return sum(self.scores[Jugador]) / len(self.scores[Jugador])
+        else:
+            print(f"Player {Jugador} no existe.")
+            return None
+
+    def get_top_scorer(self):
+        if not self.scores:
+            print("No hay puntuaciones disponibles .")
+            return None
+        top_scorer = max(self.scores.items(), key=lambda item: sum(item[1]))
+        return top_scorer[0]
+
+    def get_top_tres_jugadores(self):
+        if len(self.scores) < 3:
+            print("No hay suficientes jugadores para clasificar.")
+            return None
+        sorted_players = sorted(self.scores.items(), key=lambda item: sum(item[1]), reverse=True)
+        top_three = sorted_players[:3]
+        return [player for player, scores in top_three]
+
+    def mostrar_puntuaciones(self):
+        for player, scores in self.scores.items():
+            print(f"Jugador: {player}")
+            print(f"  Scores: {scores}")
+            print(f" puntuación promedio: {self.obtener_puntuación_promedio(player):.2f}")
+            print()
+
+# De esta manera podemos ver las forma de uso de la tabla de los jugadores 
+if __name__ == "__main__":
+    Torneo = Torneo()
+
+    # Añadir las puntuaciones de los tres jugadores 
+    Torneo.agregar_puntuación("Estalin", 95)
+    Torneo.agregar_puntuación("Estalin", 88)
+    Torneo.agregar_puntuación("Oliver", 75)
+    Torneo.agregar_puntuación("Oliver", 85)
+    Torneo.agregar_puntuación("Angel", 80)
+    Torneo.agregar_puntuación("CAngel", 90)
+    Torneo.agregar_puntuación("Angel", 85)
+
+    # Calcular promedio de puntuación de cada jugador
+    print(f"Estalin's puntuación promedio: {Torneo.obtener_puntuación_promedio('Estalin'):.2f}")
+    print(f"Oliver's puntuación promedio: {Torneo.obtener_puntuación_promedio('Oliver'):.2f}")
+    print(f"Angel's puntuación promedio: {Torneo.obtener_puntuación_promedio('Angel'):.2f}")
+
+    # Mostrar el jugador con la puntuación más alta
+    print(f"Máximo goleador: {Torneo.get_top_scorer()}")
+
+    # Devolver el ranking de los tres mejores jugadores
+    print(f"Los tres mejores jugadores: {Torneo.get_top_tres_jugadores()}")
+
+    # Mostrar puntuaciones de los tres mejore  los jugadores
+    print("Todos los puntajes de los jugadores:")
+    Torneo.mostrar_puntuaciones()
